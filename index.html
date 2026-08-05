@@ -143,11 +143,13 @@ function render(){
 function tRender(){
   var h='';
   F.forEach(function(r){
-    var mode=r[0],ip=r[1],port=r[2],auth=r[3],sw=r[4],c=r[5],addr=ip+':'+port;
+    var mode=r[0],ip=r[1],port=r[2],auth=r[3],sw=r[4],c=r[5];
+    var hasAuth=auth&&auth!=='无认证'&&auth!=='-';
+    var fullAddr=hasAuth?auth+'@'+ip+':'+port:ip+':'+port;
     var mt=mode==='ALL'?'<span class="tag tag-all">ALL</span>':mode==='TCP'?'<span class="tag tag-tcp">TCP</span>':'<span class="tag tag-udp">UDP</span>';
-    var ab=(auth==='无认证'||!auth||auth==='-')?'<span class="ok">✓ 无</span>':'<span class="auth">🔑 '+auth+'</span>';
+    var ab=hasAuth?'<span class="auth">🔑 '+auth+'</span>':'<span class="ok">✓ 无</span>';
     var ss=sw&&sw!=='-'?'<span class="sw">'+sw+'</span>':'<span class="sw" style="color:var(--t3)">—</span>';
-    h+='<tr class="cp" data-addr="'+addr+'"><td class="ip">'+addr+'</td><td>'+mt+'</td><td class="c">'+flag(c)+' '+c+'</td><td>'+ab+'</td><td>'+ss+'</td></tr>';
+    h+='<tr class="cp" data-addr="'+fullAddr+'"><td class="ip">'+ip+':'+port+'</td><td>'+mt+'</td><td class="c">'+flag(c)+' '+c+'</td><td>'+ab+'</td><td>'+ss+'</td></tr>';
   });
   tb.innerHTML=h||'<tr><td colspan="5"><div class="emo"><div class="ic">🔍</div><p>无结果</p></div></td></tr>';
   document.querySelectorAll('.cp').forEach(function(el){el.onclick=function(){cp(this.dataset.addr,this)}});
@@ -156,11 +158,13 @@ function tRender(){
 function cRender(){
   var h='';
   F.forEach(function(r){
-    var mode=r[0],ip=r[1],port=r[2],auth=r[3],sw=r[4],c=r[5],addr=ip+':'+port;
+    var mode=r[0],ip=r[1],port=r[2],auth=r[3],sw=r[4],c=r[5];
+    var hasAuth=auth&&auth!=='无认证'&&auth!=='-';
+    var fullAddr=hasAuth?auth+'@'+ip+':'+port:ip+':'+port;
     var mt=mode==='ALL'?'<span class="tag tag-all">ALL</span>':mode==='TCP'?'<span class="tag tag-tcp">TCP</span>':'<span class="tag tag-udp">UDP</span>';
-    var ab=(auth==='无认证'||!auth||auth==='-')?'<span class="ok">✓ 无认证</span>':'<span class="auth">🔑 '+auth+'</span>';
+    var ab=hasAuth?'<span class="auth">🔑 '+auth+'</span>':'<span class="ok">✓ 无认证</span>';
     var ss=sw&&sw!=='-'?'<span class="sw">'+sw+'</span>':'<span style="color:var(--t3)">—</span>';
-    h+='<div class="crd" data-addr="'+addr+'"><div class="addr">'+addr+'</div><div class="meta">'+mt+' '+flag(c)+' '+c+' · '+ab+' · '+ss+'</div></div>';
+    h+='<div class="crd" data-addr="'+fullAddr+'"><div class="addr">'+ip+':'+port+'</div><div class="meta">'+mt+' '+flag(c)+' '+c+' · '+ab+' · '+ss+'</div></div>';
   });
   cv.innerHTML=h||'<div class="emo"><div class="ic">🔍</div><p>无结果</p></div>';
   document.querySelectorAll('.crd').forEach(function(el){el.onclick=function(){cp(this.dataset.addr,this)}});
