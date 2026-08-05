@@ -178,10 +178,17 @@ function switchView(v){
 }
 
 function cp(text,el){
-  navigator.clipboard.writeText(text).then(function(){
-    el.style.background='rgba(52,211,153,.15)';
-    setTimeout(function(){el.style.background=''},1000);
-  }).catch(function(){});
+  var done=function(){el.style.background='rgba(52,211,153,.15)';setTimeout(function(){el.style.background=''},1000)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){});
+  }else{
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy')}catch(e){}
+    document.body.removeChild(ta);
+    done();
+  }
 }
 
 document.addEventListener('DOMContentLoaded',init);
