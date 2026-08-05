@@ -1,96 +1,96 @@
-100.40.67.173:3478  ALL    NO_AUTH  
-104.54.48.226:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-108.66.209.195:3478  ALL    NO_AUTH  
-108.48.98.42:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-106.104.5.220:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-107.212.243.197:3478  ALL    NO_AUTH  
-122.116.18.162:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-122.117.135.61:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-114.32.150.205:3478  ALL    NO_AUTH  Coturn-4.5.1.3 'dan Eider'
-114.34.87.173:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-114.33.139.168:3478  ALL    NO_AUTH  
-114.35.238.200:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-114.35.171.124:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-114.34.87.173:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-114.35.58.97:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-118.142.3.218:3478  ALL    CRED(test:test)  None
-118.142.0.139:3478  ALL    CRED(test:test)  Coturn-4.5.2 'dan Eider'
-118.163.170.1:3478  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'
-118.163.170.1:3479  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'
-118.22.31.253:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-118.22.31.253:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-118.22.31.252:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-118.22.31.252:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-12.192.169.147:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-12.192.169.147:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-125.227.142.107:3478  UDP    CRED(test:test)  flashphoner
-199.170.132.100:3478  ALL    NO_AUTH  Coturn-4.6.2 'Gorst'
-1.34.178.100:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-173.8.160.227:3478  ALL    NO_AUTH  Coturn-4.6.2 'Gorst'
-173.8.160.227:5349  UDP    NO_AUTH  Coturn-4.6.2 'Gorst'
-203.69.30.64:3478  ALL    CRED(test:test)  Coturn-4.6.1 'Gorst'
-203.69.30.64:5349  ALL    CRED(test:test)  Coturn-4.6.1 'Gorst'
-203.74.127.180:3478  ALL    CRED(test:test)  TANDBERG/4145 (X15.2.4)
-203.74.127.176:3478  ALL    CRED(test:test)  TANDBERG/4145 (X15.2.4)
-211.20.34.185:3478  ALL    NO_AUTH  
-211.20.1.40:3478  ALL    CRED(test:test123)  
-211.20.1.40:5349  ALL    CRED(test:test123)  
-211.20.34.186:3478  ALL    NO_AUTH  
-211.22.234.73:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-211.20.17.230:3478  ALL    CRED(admin:admin)  TANDBERG/4135 (X8.10.3)
-211.23.202.121:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-211.75.65.85:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-218.161.7.142:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-220.132.50.125:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-220.132.221.128:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-220.134.81.122:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-220.135.209.224:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-222.10.185.4:3478  ALL    NO_AUTH  
-24.5.14.146:3478  ALL    NO_AUTH  
-24.5.14.146:5349  ALL    NO_AUTH  
-24.213.7.100:5349  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'
-24.213.7.100:3478  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'
-45.17.108.251:3478  TCP    NO_AUTH  Coturn-4.6.1 'Gorst'
-45.27.170.171:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-50.147.4.10:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-42.200.87.184:3478  ALL    CRED(test:test)  Coturn-4.5.2 'dan Eider'
-50.252.118.84:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-59.124.165.226:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-59.124.165.224:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-59.124.165.228:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-59.124.165.225:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-59.124.165.227:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-59.124.165.213:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-59.124.165.223:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-59.126.43.187:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-59.127.162.72:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-60.250.206.117:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-60.250.206.242:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-60.250.206.243:3478  ALL    CRED(test:test)  Coturn-4.5.2 'dan Eider'
-60.250.206.241:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-60.250.30.57:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-61.216.140.225:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-61.216.140.223:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-61.216.140.227:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-61.216.140.59:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-61.216.140.58:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'
-72.65.255.118:3478  ALL    NO_AUTH  
-72.82.10.123:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-67.36.60.30:3478  ALL    CRED(test:test123)  
-68.123.12.205:5349  ALL    CRED(test:test123)  Coturn-4.6.1 'Gorst'
-68.59.32.98:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-71.12.240.167:3478  ALL    NO_AUTH  
-71.232.178.52:3478  ALL    NO_AUTH  
-73.133.157.152:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-73.208.238.118:3478  ALL    NO_AUTH  
-99.37.8.201:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-67.191.164.193:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-75.35.99.99:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-99.82.211.30:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-76.113.58.60:3478  ALL    NO_AUTH  Coturn-4.6.2 'Gorst'
-76.135.105.161:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'
-76.217.158.150:3478  ALL    NO_AUTH  
-96.227.104.49:3478  ALL    CRED(test:test)  
-96.245.74.202:3478  ALL    NO_AUTH  
-98.224.70.58:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'
-98.116.121.114:3478  ALL    NO_AUTH  
+100.40.67.173:3478  ALL    NO_AUTH  US  US
+104.54.48.226:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+108.66.209.195:3478  ALL    NO_AUTH  US  US
+108.48.98.42:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+106.104.5.220:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  TW  TW
+107.212.243.197:3478  ALL    NO_AUTH  US  US
+122.116.18.162:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  TW  TW
+122.117.135.61:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+114.32.150.205:3478  ALL    NO_AUTH  Coturn-4.5.1.3 'dan Eider'  TW  TW
+114.34.87.173:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  TW  TW
+114.33.139.168:3478  ALL    NO_AUTH  TW  TW
+114.35.238.200:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+114.35.171.124:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+114.34.87.173:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  TW  TW
+114.35.58.97:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+118.142.3.218:3478  ALL    CRED(test:test)  None  HK  HK
+118.142.0.139:3478  ALL    CRED(test:test)  Coturn-4.5.2 'dan Eider'  HK  HK
+118.163.170.1:3478  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'  TW  TW
+118.163.170.1:3479  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'  TW  TW
+118.22.31.253:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  JP  JP
+118.22.31.253:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  JP  JP
+118.22.31.252:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  JP  JP
+118.22.31.252:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  JP  JP
+12.192.169.147:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+12.192.169.147:3479  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+125.227.142.107:3478  UDP    CRED(test:test)  flashphoner  TW  TW
+199.170.132.100:3478  ALL    NO_AUTH  Coturn-4.6.2 'Gorst'  US  US
+1.34.178.100:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+173.8.160.227:3478  ALL    NO_AUTH  Coturn-4.6.2 'Gorst'  US  US
+173.8.160.227:5349  UDP    NO_AUTH  Coturn-4.6.2 'Gorst'  US  US
+203.69.30.64:3478  ALL    CRED(test:test)  Coturn-4.6.1 'Gorst'  TW  TW
+203.69.30.64:5349  ALL    CRED(test:test)  Coturn-4.6.1 'Gorst'  TW  TW
+203.74.127.180:3478  ALL    CRED(test:test)  TANDBERG/4145 (X15.2.4)  TW  TW
+203.74.127.176:3478  ALL    CRED(test:test)  TANDBERG/4145 (X15.2.4)  TW  TW
+211.20.34.185:3478  ALL    NO_AUTH  TW  TW
+211.20.1.40:3478  ALL    CRED(test:test123)  TW  TW
+211.20.1.40:5349  ALL    CRED(test:test123)  TW  TW
+211.20.34.186:3478  ALL    NO_AUTH  TW  TW
+211.22.234.73:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+211.20.17.230:3478  ALL    CRED(admin:admin)  TANDBERG/4135 (X8.10.3)  TW  TW
+211.23.202.121:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+211.75.65.85:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+218.161.7.142:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  TW  TW
+220.132.50.125:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+220.132.221.128:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+220.134.81.122:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+220.135.209.224:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+222.10.185.4:3478  ALL    NO_AUTH  JP  JP
+24.5.14.146:3478  ALL    NO_AUTH  US  US
+24.5.14.146:5349  ALL    NO_AUTH  US  US
+24.213.7.100:5349  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'  US  US
+24.213.7.100:3478  ALL    NO_AUTH  Coturn-4.5.1.1 'dan Eider'  US  US
+45.17.108.251:3478  TCP    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+45.27.170.171:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+50.147.4.10:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+42.200.87.184:3478  ALL    CRED(test:test)  Coturn-4.5.2 'dan Eider'  HK  HK
+50.252.118.84:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+59.124.165.226:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+59.124.165.224:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+59.124.165.228:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+59.124.165.225:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+59.124.165.227:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+59.124.165.213:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+59.124.165.223:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+59.126.43.187:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  TW  TW
+59.127.162.72:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+60.250.206.117:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+60.250.206.242:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+60.250.206.243:3478  ALL    CRED(test:test)  Coturn-4.5.2 'dan Eider'  TW  TW
+60.250.206.241:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+60.250.30.57:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+61.216.140.225:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+61.216.140.223:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+61.216.140.227:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+61.216.140.59:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+61.216.140.58:3478  ALL    CRED(test:test)  Coturn-4.6.2 'Gorst'  TW  TW
+72.65.255.118:3478  ALL    NO_AUTH  US  US
+72.82.10.123:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+67.36.60.30:3478  ALL    CRED(test:test123)  US  US
+68.123.12.205:5349  ALL    CRED(test:test123)  Coturn-4.6.1 'Gorst'  US  US
+68.59.32.98:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+71.12.240.167:3478  ALL    NO_AUTH  US  US
+71.232.178.52:3478  ALL    NO_AUTH  US  US
+73.133.157.152:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+73.208.238.118:3478  ALL    NO_AUTH  US  US
+99.37.8.201:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+67.191.164.193:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+75.35.99.99:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+99.82.211.30:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+76.113.58.60:3478  ALL    NO_AUTH  Coturn-4.6.2 'Gorst'  US  US
+76.135.105.161:3478  ALL    NO_AUTH  Coturn-4.5.2 'dan Eider'  US  US
+76.217.158.150:3478  ALL    NO_AUTH  US  US
+96.227.104.49:3478  ALL    CRED(test:test)  US  US
+96.245.74.202:3478  ALL    NO_AUTH  US  US
+98.224.70.58:3478  ALL    NO_AUTH  Coturn-4.6.1 'Gorst'  US  US
+98.116.121.114:3478  ALL    NO_AUTH  US  US
