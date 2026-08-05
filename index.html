@@ -2,680 +2,185 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TURN 中继池 · 监控面板</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TURN 中继池</title>
 <style>
-/* ========== Reset & Base ========== */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0b0d17;
-  --bg2:#111628;
-  --bg3:#181e34;
-  --surface:rgba(20,28,52,0.75);
-  --surface-hover:rgba(30,42,72,0.85);
-  --border:rgba(60,100,180,0.15);
-  --border-glow:rgba(60,150,255,0.3);
-  --text:#e8edf5;
-  --text-dim:#8892b0;
-  --text-muted:#4a5578;
-  --cyan:#22d3ee;
-  --blue:#3b82f6;
-  --indigo:#6366f1;
-  --purple:#a855f7;
-  --pink:#ec4899;
-  --orange:#f59e0b;
-  --green:#10b981;
-  --red:#ef4444;
-  --gradient-hero:linear-gradient(135deg,#0ea5e9,#6366f1,#a855f7);
-  --gradient-glow:linear-gradient(135deg,rgba(14,165,233,0.3),rgba(99,102,241,0.2),rgba(168,85,247,0.1));
-  --radius:14px;
-  --radius-sm:10px;
-}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-  background-image:
-    radial-gradient(ellipse 70% 40% at 20% 0%,rgba(14,165,233,0.06) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 30% at 80% 100%,rgba(168,85,247,0.05) 0%,transparent 60%);
-}
-
-/* ========== Animated BG ========== */
-.bg-orb{
-  position:fixed;top:-20%;left:-10%;width:60%;height:60%;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(14,165,233,0.06),transparent 70%);
-  pointer-events:none;z-index:0;
-  animation:orb-drift 20s ease-in-out infinite;
-}
-.bg-orb2{
-  position:fixed;bottom:-15%;right:-10%;width:50%;height:50%;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(168,85,247,0.05),transparent 70%);
-  pointer-events:none;z-index:0;
-  animation:orb-drift 25s ease-in-out infinite reverse;
-}
-@keyframes orb-drift{
-  0%,100%{transform:translate(0,0) scale(1)}
-  33%{transform:translate(5%,3%) scale(1.05)}
-  66%{transform:translate(-3%,-2%) scale(0.95)}
-}
-
-/* ========== Layout ========== */
-.container{max-width:1440px;margin:0 auto;padding:24px 20px;position:relative;z-index:1}
-
-/* ========== Header ========== */
-.header{
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
-  margin-bottom:28px;
-}
-.header-brand{display:flex;align-items:center;gap:16px}
-.header-logo{
-  width:50px;height:50px;border-radius:14px;
-  background:var(--gradient-hero);
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;position:relative;
-  box-shadow:0 4px 24px rgba(99,102,241,0.3);
-}
-.header-logo::after{
-  content:'';position:absolute;inset:-2px;border-radius:16px;
-  background:var(--gradient-hero);z-index:-1;opacity:0.4;
-  filter:blur(8px);
-}
-.header-text h1{
-  font-size:22px;font-weight:800;
-  background:var(--gradient-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:-0.3px;
-}
-.header-text .sub{
-  font-size:12px;color:var(--text-dim);margin-top:2px;-webkit-text-fill-color:var(--text-dim);
-}
-.header-meta{
-  display:flex;align-items:center;gap:16px;
-  font-size:12px;color:var(--text-dim);
-}
-.status-badge{
-  display:flex;align-items:center;gap:6px;
-  padding:6px 14px;border-radius:20px;
-  background:rgba(16,185,129,0.1);
-  border:1px solid rgba(16,185,129,0.2);
-  color:var(--green);font-size:12px;font-weight:500;
-}
-.status-dot{
-  width:7px;height:7px;border-radius:50%;background:var(--green);
-  animation:pulse-dot 2s ease-in-out infinite;
-}
-@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 4px var(--green)}50%{opacity:0.3;box-shadow:none}}
-
-/* ========== Stats Grid ========== */
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:12px;margin-bottom:24px;
-}
-.stat-card{
-  position:relative;
-  padding:18px 20px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius-sm);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  transition:all 0.3s ease;
-  overflow:hidden;
-}
-.stat-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  border-radius:var(--radius-sm) var(--radius-sm) 0 0;
-  opacity:0;transition:opacity 0.3s;
-}
-.stat-card:hover{transform:translateY(-3px);border-color:var(--border-glow);background:var(--surface-hover)}
-.stat-card:hover::before{opacity:1}
-.stat-card:nth-child(1)::before{background:var(--cyan)}
-.stat-card:nth-child(2)::before{background:var(--orange)}
-.stat-card:nth-child(3)::before{background:var(--blue)}
-.stat-card:nth-child(4)::before{background:var(--purple)}
-.stat-card:nth-child(5)::before{background:var(--pink)}
-.stat-card:nth-child(6)::before{background:var(--green)}
-.stat-label{
-  font-size:10px;text-transform:uppercase;letter-spacing:1.2px;
-  color:var(--text-muted);margin-bottom:8px;
-}
-.stat-value{
-  font-size:28px;font-weight:800;
-  font-variant-numeric:tabular-nums;
-  line-height:1.1;
-}
-.stat-value.cyan{color:var(--cyan)}
-.stat-value.orange{color:var(--orange)}
-.stat-value.blue{color:var(--blue)}
-.stat-value.purple{color:var(--purple)}
-.stat-value.pink{color:var(--pink)}
-.stat-value.green{color:var(--green)}
-.stat-value.white{color:var(--text)}
-.stat-sub{
-  font-size:11px;color:var(--text-muted);margin-top:4px;
-}
-
-/* ========== Controls ========== */
-.controls{
-  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-  margin-bottom:20px;padding:14px 18px;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius-sm);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-}
-.ctrl-group{
-  display:flex;align-items:center;gap:6px;
-}
-.ctrl-label{
-  font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;
-}
-select,input{
-  padding:7px 12px;border:1px solid var(--border);border-radius:6px;
-  background:rgba(11,13,23,0.6);color:var(--text);
-  font-size:13px;outline:none;font-family:inherit;
-  transition:border-color 0.2s,box-shadow 0.2s;
-}
-select:focus,input:focus{
-  border-color:var(--border-glow);
-  box-shadow:0 0 0 3px rgba(99,102,241,0.15);
-}
-select{cursor:pointer;min-width:100px}
-input::placeholder{color:var(--text-muted)}
-.ctrl-spacer{flex:1}
-.search-wrap{
-  position:relative;min-width:220px;
-}
-.search-wrap .s-icon{
-  position:absolute;left:10px;top:50%;transform:translateY(-50%);
-  color:var(--text-muted);font-size:13px;pointer-events:none;
-}
-.search-wrap input{padding-left:30px;width:100%}
-
-/* ========== View Toggle ========== */
-.view-toggle{
-  display:flex;gap:3px;
-  padding:3px;border-radius:8px;
-  background:rgba(11,13,23,0.5);border:1px solid var(--border);
-}
-.view-btn{
-  padding:6px 12px;border:none;border-radius:6px;
-  background:transparent;color:var(--text-dim);font-size:12px;
-  cursor:pointer;transition:all 0.2s;font-family:inherit;
-}
-.view-btn.active{background:var(--surface-hover);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
-.view-btn:hover:not(.active){color:var(--text)}
-
-/* ========== Table View ========== */
-.table-wrap{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);overflow:hidden;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  display:none;
-}
-.table-wrap.active{display:block}
-table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{
-  position:sticky;top:0;
-  background:rgba(11,13,23,0.7);color:var(--text-dim);
-  font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.8px;
-  padding:11px 14px;text-align:left;
-  border-bottom:1px solid var(--border);z-index:2;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  white-space:nowrap;user-select:none;cursor:pointer;
-}
-th .sort-arrow{font-size:9px;margin-left:4px;opacity:0.3;transition:opacity 0.2s}
-th:hover .sort-arrow{opacity:0.7}
-th.sorted .sort-arrow{opacity:1;color:var(--cyan)}
-tbody tr{
-  border-bottom:1px solid rgba(60,100,180,0.08);
-  transition:background 0.2s;cursor:pointer;
-}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:var(--surface-hover)}
-tbody td{padding:9px 14px;vertical-align:middle}
-td.ip-cell{
-  font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;
-  font-size:13px;color:var(--cyan);font-weight:500;
-}
-td.port-cell{
-  font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;
-  font-size:13px;color:var(--text);
-}
-tbody tr.copied{
-  background:rgba(16,185,129,0.08) !important;
-  transition:background 0s;
-}
-tbody tr.copied td.ip-cell{color:var(--green)}
-
-/* ========== Card View ========== */
-.card-view{
-  display:none;
-  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:14px;
-}
-.card-view.active{display:grid}
-.relay-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:18px 20px;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  transition:all 0.3s ease;cursor:pointer;
-  position:relative;overflow:hidden;
-}
-.relay-card::before{
-  content:'';position:absolute;top:0;left:0;width:4px;height:100%;
-  border-radius:4px 0 0 4px;opacity:0;transition:opacity 0.3s;
-}
-.relay-card:hover{
-  transform:translateY(-4px);border-color:var(--border-glow);
-  background:var(--surface-hover);box-shadow:0 12px 40px rgba(0,0,0,0.4);
-}
-.relay-card:hover::before{opacity:1}
-.relay-card.copied{
-  border-color:rgba(16,185,129,0.4) !important;
-  background:rgba(16,185,129,0.06) !important;
-}
-.card-top{
-  display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;
-}
-.card-ip{
-  font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;
-  font-size:15px;font-weight:600;color:var(--cyan);
-}
-.card-port{
-  font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;
-  font-size:13px;color:var(--text-dim);margin-top:2px;
-}
-.card-badges{
-  display:flex;gap:6px;flex-wrap:wrap;
-}
-.card-meta{
-  display:grid;grid-template-columns:1fr 1fr;gap:8px;
-  margin-top:10px;padding-top:12px;
-  border-top:1px solid rgba(60,100,180,0.1);
-}
-.card-meta-item{}
-.card-meta-label{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:2px}
-.card-meta-value{font-size:13px;color:var(--text-dim)}
-.card-copy-hint{
-  position:absolute;bottom:12px;right:16px;
-  font-size:10px;color:var(--text-muted);opacity:0;
-  transition:opacity 0.2s;
-}
-.relay-card:hover .card-copy-hint{opacity:0.6}
-
-/* ========== Tags ========== */
-.tag{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 10px;border-radius:20px;
-  font-size:11px;font-weight:600;letter-spacing:0.3px;
-}
-.tag-all{background:rgba(245,158,11,0.12);color:var(--orange);border:1px solid rgba(245,158,11,0.2)}
-.tag-tcp{background:rgba(59,130,246,0.12);color:var(--blue);border:1px solid rgba(59,130,246,0.2)}
-.tag-udp{background:rgba(168,85,247,0.12);color:var(--purple);border:1px solid rgba(168,85,247,0.2)}
-.flag{font-size:16px;line-height:1}
-.auth-none{color:var(--green);background:rgba(16,185,129,0.08);padding:2px 8px;border-radius:4px;font-size:11px}
-.auth-yes{color:var(--orange);background:rgba(245,158,11,0.08);padding:2px 8px;border-radius:4px;font-size:11px}
-.soft{font-size:12px;color:var(--text-dim);font-family:'SF Mono','Fira Code',monospace}
-.soft-unknown{color:var(--text-muted);font-style:italic}
-
-/* ========== Toast ========== */
-#toast{
-  position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-24px);
-  background:rgba(16,185,129,0.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(16,185,129,0.25);
-  color:var(--green);padding:12px 28px;border-radius:12px;
-  font-size:14px;font-weight:500;opacity:0;pointer-events:none;
-  z-index:999;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow:0 8px 40px rgba(0,0,0,0.5);
-  display:flex;align-items:center;gap:10px;
-}
-#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ========== Empty State ========== */
-.empty-state{
-  text-align:center;padding:60px 20px;color:var(--text-muted);
-}
-.empty-state .e-icon{font-size:48px;margin-bottom:12px;opacity:0.5}
-.empty-state p{font-size:14px}
-
-/* ========== Footer ========== */
-.footer{
-  text-align:center;margin-top:24px;
-  font-size:12px;color:var(--text-muted);padding:16px;
-  border-top:1px solid rgba(60,100,180,0.08);
-}
-.footer span{margin:0 8px}
-
-/* ========== Responsive ========== */
-@media(max-width:900px){
-  .card-view{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
-}
-@media(max-width:768px){
-  .container{padding:16px 12px}
-  .header-text h1{font-size:18px}
-  .header-logo{width:42px;height:42px;font-size:20px}
-  .stats-grid{grid-template-columns:repeat(3,1fr);gap:8px}
-  .stat-card{padding:14px}
-  .stat-value{font-size:22px}
-  .controls{flex-direction:column;align-items:stretch}
-  .search-wrap{min-width:unset}
-  .table-wrap{overflow-x:auto}
-  table{font-size:12px}
-  thead th,tbody td{padding:8px 10px}
-  .card-view{grid-template-columns:1fr}
-  .header-meta .status-badge span{display:none}
-}
-@media(max-width:480px){
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .view-toggle{width:100%}
-  .view-btn{flex:1;text-align:center}
+:root{--bg:#0a0e17;--card:#111827;--card2:#1a2235;--b:#1e293b;--t:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--a:#60a5fa;--g:#34d399;--y:#fbbf24;--r:#f87171;--rds:10px;--rds2:6px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t);font:14px/1.5 -apple-system,'PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh}
+.c{max-width:960px;margin:0 auto;padding:0 16px}
+h1{font-size:22px;font-weight:700;padding:20px 0 6px;letter-spacing:-.02em}
+.sub{font-size:12px;color:var(--t3);margin-bottom:16px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.st{background:var(--card);border:1px solid var(--b);border-radius:var(--rds2);padding:10px 14px;text-align:center;min-width:80px;flex:1}
+.st .v{font-size:18px;font-weight:700;color:var(--a)}
+.st .l{font-size:11px;color:var(--t3);margin-top:2px}
+.bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.bar input,.bar select{background:var(--card);border:1px solid var(--b);color:var(--t);padding:7px 12px;border-radius:var(--rds2);font-size:13px;outline:0}
+.bar input:focus,.bar select:focus{border-color:var(--a)}
+.bar input{flex:1;min-width:160px}
+.bar select{min-width:90px}
+.btns{display:flex;gap:4px}
+.btn{background:var(--card);border:1px solid var(--b);color:var(--t2);padding:7px 14px;border-radius:var(--rds2);font-size:13px;cursor:pointer}
+.btn.on{background:var(--a);color:#fff;border-color:var(--a)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;padding:8px 12px;color:var(--t3);font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--b);white-space:nowrap}
+.tbl td{padding:10px 12px;border-bottom:1px solid rgba(30,41,59,.5);white-space:nowrap}
+.tbl tr:hover td{background:rgba(30,41,59,.3)}
+.tbl .ip{font-family:'SF Mono','Fira Code',monospace;color:var(--a);font-size:12px}
+.tbl .c{font-size:12px}
+.tbl .sw{font-size:11px;color:var(--t2);max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.tbl .ok{color:var(--g);font-size:11px}
+.tbl .auth{color:var(--y);font-size:11px}
+.tbl .cp{cursor:pointer}
+.ipw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:20px}
+.crd{background:var(--card);border:1px solid var(--b);border-radius:var(--rds);padding:14px 16px;cursor:pointer;transition:.15s}
+.crd:hover{border-color:var(--a)}
+.crd .addr{font-family:'SF Mono','Fira Code',monospace;font-size:15px;color:var(--a);font-weight:600;margin-bottom:8px}
+.crd .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:var(--t2)}
+.tag{font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600}
+.tag-all{background:rgba(96,165,250,.15);color:var(--a)}
+.tag-tcp{background:rgba(52,211,153,.15);color:var(--g)}
+.tag-udp{background:rgba(251,191,36,.15);color:var(--y)}
+.emo{text-align:center;padding:40px;color:var(--t3)}
+.emo .ic{font-size:40px;margin-bottom:8px}
+.ft{text-align:center;padding:20px;color:var(--t3);font-size:12px}
+@media(max-width:600px){
+  .stats{gap:6px}.st{padding:8px 10px}.st .v{font-size:16px}
+  .bar input{min-width:120px}.bar select{min-width:70px}
+  .cards{grid-template-columns:1fr}
+  .tbl .sw{max-width:100px}.tbl .tag{display:none}
 }
 </style>
 </head>
 <body>
-<div class="bg-orb"></div>
-<div class="bg-orb2"></div>
+<div class="c">
+<h1>TURN 中继池</h1>
+<div class="sub">GitHub · 自动更新</div>
 
-<div class="container">
-
-<!-- Header -->
-<header class="header">
-  <div class="header-brand">
-    <div class="header-logo">🔄</div>
-    <div class="header-text">
-      <h1>TURN 中继池</h1>
-      <div class="sub">Relay Pool · 实时监控面板</div>
-    </div>
-  </div>
-  <div class="header-meta">
-    <div class="status-badge">
-      <span class="status-dot"></span>
-      <span>Live</span>
-    </div>
-    <span>更新于 <span id="updateTime">—</span></span>
-  </div>
-</header>
-
-<!-- Stats -->
-<div class="stats-grid" id="statsGrid">
-  <div class="stat-card"><div class="stat-label">总节点</div><div class="stat-value white" id="sTotal">—</div></div>
-  <div class="stat-card"><div class="stat-label">ALL 模式</div><div class="stat-value orange" id="sAll">—</div></div>
-  <div class="stat-card"><div class="stat-label">TCP</div><div class="stat-value blue" id="sTcp">—</div></div>
-  <div class="stat-card"><div class="stat-label">UDP</div><div class="stat-value purple" id="sUdp">—</div></div>
-  <div class="stat-card"><div class="stat-label">筛选结果</div><div class="stat-value pink" id="sFiltered">—</div><div class="stat-sub" id="sFilteredSub"></div></div>
-  <div class="stat-card"><div class="stat-label">国家覆盖</div><div class="stat-value green" id="sCountries">—</div></div>
+<div class="stats" id="stats">
+  <div class="st"><div class="v" id="s0">-</div><div class="l">总节点</div></div>
+  <div class="st"><div class="v" id="s1">-</div><div class="l">ALL</div></div>
+  <div class="st"><div class="v" id="s2">-</div><div class="l">TCP</div></div>
+  <div class="st"><div class="v" id="s3">-</div><div class="l">UDP</div></div>
 </div>
 
-<!-- Controls -->
-<div class="controls">
-  <div class="ctrl-group">
-    <span class="ctrl-label">协议</span>
-    <select id="pf"><option value="">全部</option><option value="ALL">ALL</option><option value="TCP">TCP</option><option value="UDP">UDP</option></select>
-  </div>
-  <div class="ctrl-group">
-    <span class="ctrl-label">认证</span>
-    <select id="authF"><option value="">全部</option><option value="none">无认证</option><option value="auth">有认证</option></select>
-  </div>
-  <div class="ctrl-group">
-    <span class="ctrl-label">国家</span>
-    <select id="countryF"><option value="">全部</option></select>
-  </div>
-  <div class="ctrl-spacer"></div>
-  <div class="view-toggle">
-    <button class="view-btn active" data-view="table" onclick="switchView('table')">📋 表格</button>
-    <button class="view-btn" data-view="card" onclick="switchView('card')">📇 卡片</button>
-  </div>
-  <div class="search-wrap">
-    <span class="s-icon">🔍</span>
-    <input id="sb" placeholder="搜索 IP、端口、国家...">
+<div class="bar">
+  <input id="q" type="text" placeholder="搜索 IP、端口、国家...">
+  <select id="pf"><option value="">全部</option><option value="ALL">ALL</option><option value="TCP">TCP</option><option value="UDP">UDP</option></select>
+  <select id="af"><option value="">全部认证</option><option value="none">无认证</option><option value="cred">需认证</option></select>
+  <select id="cf"><option value="">全部国家</option></select>
+  <div class="btns">
+    <button class="btn on" data-v="table" id="bt">表格</button>
+    <button class="btn" data-v="card" id="bc">卡片</button>
   </div>
 </div>
 
-<!-- Table View -->
-<div class="table-wrap active" id="tableView">
-  <table>
-    <thead>
-      <tr>
-        <th onclick="sortBy('idx')" class="sorted"># <span class="sort-arrow">▲</span></th>
-        <th onclick="sortBy('ip')">IP 地址 <span class="sort-arrow">⇅</span></th>
-        <th onclick="sortBy('port')" style="width:70px">端口 <span class="sort-arrow">⇅</span></th>
-        <th onclick="sortBy('mode')" style="width:90px">模式 <span class="sort-arrow">⇅</span></th>
-        <th onclick="sortBy('country')" style="width:85px">国家 <span class="sort-arrow">⇅</span></th>
-        <th onclick="sortBy('auth')" style="width:105px">认证 <span class="sort-arrow">⇅</span></th>
-        <th>软件版本</th>
-        <th style="width:36px"></th>
-      </tr>
-    </thead>
-    <tbody id="tbdy">
-      <tr><td colspan="8"><div class="empty-state"><div class="e-icon">⏳</div><p>加载中...</p></div></td></tr>
-    </tbody>
-  </table>
+<div id="vT">
+  <div class="ipw"><table class="tbl"><thead><tr><th>IP:端口</th><th>类型</th><th>国家</th><th>认证</th><th>软件</th></tr></thead><tbody id="tb"></tbody></table></div>
 </div>
+<div id="vC" style="display:none" class="cards"></div>
 
-<!-- Card View -->
-<div class="card-view" id="cardView">
-  <div class="empty-state"><div class="e-icon">⏳</div><p>加载中...</p></div>
+<div class="ft">更新 <span id="upd">-</span> · <span id="fc">-</span></div>
 </div>
-
-<div class="footer">
-  <span>🔄 TURN Relay Pool</span>
-  <span>·</span>
-  <span>by 醋</span>
-  <span>·</span>
-  <span>点击行 / 卡片复制地址</span>
-</div>
-</div>
-
-<div id="toast">📋 <span>已复制到剪贴板</span></div>
 
 <script>
-// ======== Country -> Flag ========
-function toFlag(c){if(!c||c.length!==2)return'';return String.fromCodePoint(...c.toUpperCase().split('').map(function(v){return 0x1F1E6+v.charCodeAt(0)-65}))}
+var A=[],F=[],q,pf,af,cf,tb,cv,bt,bc;
+function $(id){return document.getElementById(id)}
+function E(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e}
 
-// ======== State ========
-var all=[], filtered=[], sortKey='idx', sortDir=1;
+function flag(c){
+  var f={CN:'🇨🇳',US:'🇺🇸',DE:'🇩🇪',HK:'🇭🇰',JP:'🇯🇵',SG:'🇸🇬',TW:'🇹🇼',KR:'🇰🇷',GB:'🇬🇧',FR:'🇫🇷',NL:'🇳🇱',SE:'🇸🇪',AU:'🇦🇺',CA:'🇨🇦',IN:'🇮🇳',BR:'🇧🇷',RU:'🇷🇺',IT:'🇮🇹',ES:'🇪🇸',CH:'🇨🇭',PL:'🇵🇱',AT:'🇦🇹',BE:'🇧🇪',DK:'🇩🇰',FI:'🇫🇮',NO:'🇳🇴',CZ:'🇨🇿',IE:'🇮🇪',TR:'🇹🇷',NZ:'🇳🇿',ZA:'🇿🇦',AE:'🇦🇪',MY:'🇲🇾',TH:'🇹🇭',VN:'🇻🇳',PH:'🇵🇭',ID:'🇮🇩',IL:'🇮🇱',RO:'🇷🇴',HU:'🇭🇺',BG:'🇧🇬',GR:'🇬🇷',PT:'🇵🇹',SK:'🇸🇰',LT:'🇱🇹',LV:'🇱🇻',EE:'🇪🇪',LU:'🇱🇺',MT:'🇲🇹',CY:'🇨🇾',IS:'🇮🇸',AR:'🇦🇷',CL:'🇨🇱',CO:'🇨🇴',MX:'🇲🇽',PE:'🇵🇪'};
+  return f[c]||''
+}
 
-// ======== DOM refs ========
-var $=function(id){return document.getElementById(id)};
-var tbdy=$('tbdy'), cardView=$('cardView'), toastEl=$('toast');
-var sb=$('sb'), pf=$('pf'), authF=$('authF'), countryF=$('countryF');
+function parseCountry(item){
+  // item is [mode, ip, port, auth, sw, country]
+  return item[5] || ''
+}
 
-// ======== Tag HTML ========
-var modeTags={ALL:'<span class="tag tag-all">⬡ ALL</span>',TCP:'<span class="tag tag-tcp">◆ TCP</span>',UDP:'<span class="tag tag-udp">◈ UDP</span>'};
-
-// ======== Init ========
 async function init(){
   try{
-    var r=await fetch('/api/data'), d=await r.json();
-    all=d.rows||[];
-    $('updateTime').textContent=d.updated||'—';
-    // Populate country filter
-    var cs=new Set(all.map(function(r){return r[5]}).filter(Boolean));
+    var r=await fetch('/api/data'),d=await r.json();
+    A=d.rows||[];$('upd').textContent=(d.updated||'').slice(0,19)||'-';
+    var cs=new Set(A.map(function(x){return x[5]}).filter(Boolean));
     var sorted=Array.from(cs).sort();
-    var html='<option value="">全部</option>';
-    sorted.forEach(function(c){html+='<option value="'+c+'">'+toFlag(c)+' '+c+'</option>'});
-    countryF.innerHTML=html;
+    var h='<option value="">全部国家</option>';
+    sorted.forEach(function(c){h+='<option value="'+c+'">'+flag(c)+' '+c+'</option>'});
+    $('cf').innerHTML=h;
   }catch(e){
-    tbdy.innerHTML='<tr><td colspan="8"><div class="empty-state"><div class="e-icon">⚠️</div><p>加载失败: '+e.message+'</p></div></td></tr>';
-    cardView.innerHTML='<div class="empty-state"><div class="e-icon">⚠️</div><p>加载失败: '+e.message+'</p></div>';
-    return;
+    $('tb').innerHTML='<tr><td colspan="5"><div class="emo"><div class="ic">⚠️</div><p>加载失败</p></div></td></tr>';
+    return
   }
-  sb.oninput=render; pf.onchange=render; authF.onchange=render; countryF.onchange=render;
+  q=$('q');pf=$('pf');af=$('af');cf=$('cf');tb=$('tb');cv=$('vC');
+  bt=$('bt');bc=$('bc');
+  q.oninput=render;pf.onchange=render;af.onchange=render;cf.onchange=render;
+  bt.onclick=function(){switchView('table')};
+  bc.onclick=function(){switchView('card')};
   render();
 }
 
-// ======== Render ========
 function render(){
-  var kw=(sb.value||'').toLowerCase(), pfv=pf.value, afv=authF.value, cfv=countryF.value;
-  filtered=all.filter(function(r){
-    if(pfv&&r[0]!==pfv)return false;
-    if(afv==='none'&&r[3]&&r[3]!=='无认证'&&r[3]!=='-')return false;
-    if(afv==='auth'&&(!r[3]||r[3]==='无认证'||r[3]==='-'))return false;
-    if(cfv&&r[5]!==cfv)return false;
-    if(kw){
-      var ip=(r[1]||'').toLowerCase(), port=(r[2]||'').toLowerCase(), country=(r[5]||'').toLowerCase();
-      if(!ip.includes(kw)&&!port.includes(kw)&&!country.includes(kw))return false;
-    }
-    return true;
+  var kw=(q.value||'').toLowerCase(),pv=pf.value,av=af.value,cv2=cf.value;
+  F=A.filter(function(r){
+    if(pv&&r[0]!==pv)return false;
+    if(av==='none'&&r[3]&&r[3]!=='无认证'&&r[3]!=='-')return false;
+    if(av==='cred'&&(!r[3]||r[3]==='无认证'||r[3]==='-'))return false;
+    if(cv2&&r[5]!==cv2)return false;
+    if(kw){var s=(r[1]+' '+r[2]+' '+r[5]).toLowerCase();if(!s.includes(kw))return false}
+    return true
   });
-
-  // Stats
-  var total=all.length, allC=all.filter(function(r){return r[0]==='ALL'}).length;
-  var tcpC=all.filter(function(r){return r[0]==='TCP'}).length;
-  var udpC=all.filter(function(r){return r[0]==='UDP'}).length;
-  var countries=new Set(all.map(function(r){return r[5]}).filter(Boolean));
-  $('sTotal').textContent=total; $('sAll').textContent=allC;
-  $('sTcp').textContent=tcpC; $('sUdp').textContent=udpC;
-  $('sFiltered').textContent=filtered.length; $('sFilteredSub').textContent='/ '+total+' 总节点';
-  $('sCountries').textContent=countries.size;
-
-  sortData();
-  renderTable();
-  renderCards();
+  var t=A.length;
+  $('s0').textContent=t;
+  $('s1').textContent=A.filter(function(r){return r[0]==='ALL'}).length;
+  $('s2').textContent=A.filter(function(r){return r[0]==='TCP'}).length;
+  $('s3').textContent=A.filter(function(r){return r[0]==='UDP'}).length;
+  $('fc').textContent=F.length+'/'+t;
+  tRender();cRender();
 }
 
-// ======== Sort ========
-function sortBy(key){
-  if(sortKey===key){sortDir*=-1}else{sortKey=key;sortDir=1}
-  // Update header arrows
-  var ths=document.querySelectorAll('thead th');
-  ths.forEach(function(th,i){
-    var arrow=th.querySelector('.sort-arrow');
-    if(arrow){
-      if(i===getSortColIdx(key)){arrow.textContent=sortDir>0?'▲':'▼';th.classList.add('sorted')}
-      else{arrow.textContent='⇅';th.classList.remove('sorted')}
-    }
+function tRender(){
+  var h='';
+  F.forEach(function(r){
+    var mode=r[0],ip=r[1],port=r[2],auth=r[3],sw=r[4],c=r[5],addr=ip+':'+port;
+    var mt=mode==='ALL'?'<span class="tag tag-all">ALL</span>':mode==='TCP'?'<span class="tag tag-tcp">TCP</span>':'<span class="tag tag-udp">UDP</span>';
+    var ab=(auth==='无认证'||!auth||auth==='-')?'<span class="ok">✓ 无</span>':'<span class="auth">🔑 '+auth+'</span>';
+    var ss=sw&&sw!=='-'?'<span class="sw">'+sw+'</span>':'<span class="sw" style="color:var(--t3)">—</span>';
+    h+='<tr class="cp" data-addr="'+addr+'"><td class="ip">'+addr+'</td><td>'+mt+'</td><td class="c">'+flag(c)+' '+c+'</td><td>'+ab+'</td><td>'+ss+'</td></tr>';
   });
-  sortData();
-  renderTable();
-  renderCards();
-}
-function getSortColIdx(k){return{'idx':0,'ip':1,'port':2,'mode':3,'country':4,'auth':5}[k]||0}
-function sortData(){
-  filtered.sort(function(a,b){
-    var va,vb;
-    switch(sortKey){
-      case'idx':return sortDir*(filtered.indexOf(a)-filtered.indexOf(b));
-      case'ip':va=(a[1]||''),vb=(b[1]||'');break;
-      case'port':va=parseInt(a[2])||0,vb=parseInt(b[2])||0;return sortDir*(va-vb);
-      case'mode':va=a[0]||'',vb=b[0]||'';break;
-      case'country':va=a[5]||'',vb=b[5]||'';break;
-      case'auth':va=a[3]||'',vb=b[3]||'';break;
-      default:return 0;
-    }
-    if(typeof va==='string'){va=va.toLowerCase();vb=vb.toLowerCase()}
-    return va<vb?sortDir*-1:va>vb?sortDir:0;
-  });
-  // Reset idx sort
-  if(sortKey==='idx'){sortDir=1}
+  tb.innerHTML=h||'<tr><td colspan="5"><div class="emo"><div class="ic">🔍</div><p>无结果</p></div></td></tr>';
+  document.querySelectorAll('.cp').forEach(function(el){el.onclick=function(){cp(this.dataset.addr,this)}});
 }
 
-// ======== View Switch ========
+function cRender(){
+  var h='';
+  F.forEach(function(r){
+    var mode=r[0],ip=r[1],port=r[2],auth=r[3],sw=r[4],c=r[5],addr=ip+':'+port;
+    var mt=mode==='ALL'?'<span class="tag tag-all">ALL</span>':mode==='TCP'?'<span class="tag tag-tcp">TCP</span>':'<span class="tag tag-udp">UDP</span>';
+    var ab=(auth==='无认证'||!auth||auth==='-')?'<span class="ok">✓ 无认证</span>':'<span class="auth">🔑 '+auth+'</span>';
+    var ss=sw&&sw!=='-'?'<span class="sw">'+sw+'</span>':'<span style="color:var(--t3)">—</span>';
+    h+='<div class="crd" data-addr="'+addr+'"><div class="addr">'+addr+'</div><div class="meta">'+mt+' '+flag(c)+' '+c+' · '+ab+' · '+ss+'</div></div>';
+  });
+  cv.innerHTML=h||'<div class="emo"><div class="ic">🔍</div><p>无结果</p></div>';
+  document.querySelectorAll('.crd').forEach(function(el){el.onclick=function(){cp(this.dataset.addr,this)}});
+}
+
 function switchView(v){
-  document.querySelectorAll('.view-btn').forEach(function(b){b.classList.remove('active')});
-  document.querySelector('.view-btn[data-view="'+v+'"]').classList.add('active');
-  document.getElementById('tableView').classList.toggle('active',v==='table');
-  document.getElementById('cardView').classList.toggle('active',v==='card');
+  $('vT').style.display=v==='card'?'none':'';
+  $('vC').style.display=v==='card'?'grid':'none';
+  bt.className=v==='table'?'btn on':'btn';
+  bc.className=v==='card'?'btn on':'btn';
 }
 
-// ======== Render Table ========
-function renderTable(){
-  if(filtered.length===0){
-    tbdy.innerHTML='<tr><td colspan="8"><div class="empty-state"><div class="e-icon">🔍</div><p>无匹配节点</p></div></td></tr>';
-    return;
-  }
-  var html='';
-  for(var i=0;i<filtered.length;i++){
-    var r=filtered[i], mode=r[0]||'-', ip=r[1]||'-', port=r[2]||'-';
-    var auth=r[3]||'无认证', soft=r[4]||'-', country=r[5]||'', addr=ip+':'+port;
-    var mh=modeTags[mode]||'<span class="tag">'+mode+'</span>';
-    var fh=country?'<span class="flag">'+toFlag(country)+'</span>':'';
-    var ch=country?'<span class="country-badge">'+fh+' '+country+'</span>':'-';
-    var ah=(auth==='无认证'||auth==='-')?'<span class="auth-none">✓ 无认证</span>':'<span class="auth-yes">🔑 '+auth+'</span>';
-    var sh=(soft==='-'||!soft)?'<span class="soft-unknown">—</span>':'<span class="soft">'+soft+'</span>';
-    html+='<tr onclick="cp(\''+addr+'\',this)" data-addr="'+addr+'">'+
-      '<td style="color:var(--text-muted);font-size:11px">'+(i+1)+'</td>'+
-      '<td class="ip-cell">'+ip+'</td>'+
-      '<td class="port-cell">'+port+'</td>'+
-      '<td>'+mh+'</td>'+
-      '<td>'+ch+'</td>'+
-      '<td>'+ah+'</td>'+
-      '<td>'+sh+'</td>'+
-      '<td style="text-align:right;color:var(--text-muted);font-size:11px;opacity:0.4">📋</td>'+
-      '</tr>';
-  }
-  tbdy.innerHTML=html;
+function cp(text,el){
+  navigator.clipboard.writeText(text).then(function(){
+    el.style.background='rgba(52,211,153,.15)';
+    setTimeout(function(){el.style.background=''},1000);
+  }).catch(function(){});
 }
 
-// ======== Render Cards ========
-function renderCards(){
-  if(filtered.length===0){
-    cardView.innerHTML='<div class="empty-state"><div class="e-icon">🔍</div><p>无匹配节点</p></div>';
-    return;
-  }
-  var html='';
-  for(var i=0;i<filtered.length;i++){
-    var r=filtered[i], mode=r[0]||'-', ip=r[1]||'-', port=r[2]||'-';
-    var auth=r[3]||'无认证', soft=r[4]||'-', country=r[5]||'', addr=ip+':'+port;
-    var mh=modeTags[mode]||'<span class="tag">'+mode+'</span>';
-    var fh=country?'<span class="flag">'+toFlag(country)+'</span>':'';
-    var ah=(auth==='无认证'||auth==='-')?'<span class="auth-none">✓ 无认证</span>':'<span class="auth-yes">🔑 '+auth+'</span>';
-    var sh=(soft==='-'||!soft)?'<span class="soft-unknown">—</span>':'<span class="soft">'+soft+'</span>';
-    var cc=mode==='ALL'?'var(--orange)':mode==='TCP'?'var(--blue)':'var(--purple)';
-    html+='<div class="relay-card" onclick="cp(\''+addr+'\',this)" data-addr="'+addr+'" style="--card-accent:'+cc+'">'+
-      '<div class="card-top">'+
-        '<div><div class="card-ip">'+ip+'</div><div class="card-port">端口 '+port+'</div></div>'+
-        '<div class="card-badges">'+mh+'</div>'+
-      '</div>'+
-      '<div class="card-meta">'+
-        '<div class="card-meta-item"><div class="card-meta-label">国家</div><div class="card-meta-value">'+(country?fh+' '+country:'-')+'</div></div>'+
-        '<div class="card-meta-item"><div class="card-meta-label">认证</div><div class="card-meta-value">'+ah+'</div></div>'+
-        '<div class="card-meta-item" style="grid-column:1/3"><div class="card-meta-label">软件</div><div class="card-meta-value">'+sh+'</div></div>'+
-      '</div>'+
-      '<div class="card-copy-hint">📋 点击复制</div>'+
-      '</div>';
-  }
-  cardView.innerHTML=html;
-}
-
-// ======== Copy ========
-function cp(addr,el){
-  if(!addr)return;
-  navigator.clipboard.writeText(addr).then(function(){
-    showToast('📋 已复制 <strong>'+addr+'</strong>');
-    if(el){
-      el.classList.add('copied');
-      setTimeout(function(){el.classList.remove('copied')},800);
-    }
-  }).catch(function(){
-    var ta=document.createElement('textarea');
-    ta.value=addr;ta.style.position='fixed';ta.style.left='-9999px';
-    document.body.appendChild(ta);ta.select();document.execCommand('copy');
-    document.body.removeChild(ta);
-    showToast('📋 已复制 <strong>'+addr+'</strong>');
-    if(el){el.classList.add('copied');setTimeout(function(){el.classList.remove('copied')},800)}
-  });
-}
-
-// ======== Toast ========
-var toastTimer=null;
-function showToast(msg){
-  var e=$('toast');
-  e.innerHTML='📋 <span>'+msg+'</span>';
-  e.classList.add('on');
-  if(toastTimer)clearTimeout(toastTimer);
-  toastTimer=setTimeout(function(){e.classList.remove('on')},1800);
-}
-
-// ======== Keyboard ========
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'&&document.activeElement===sb){sb.value='';render();sb.blur()}
-});
-
-init();
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
